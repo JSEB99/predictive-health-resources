@@ -1,0 +1,22 @@
+# ignore excel & csv files
+*.xlsx
+*.xls
+*.csv
+
+# data
+data/
+
+# src
+__pycache__/
+
+# environments
+venv/
+env/
+.venv/
+.env/
+
+# jupyter cache
+.ipynb_checkpoints/
+
+# system files
+.DS_Store
