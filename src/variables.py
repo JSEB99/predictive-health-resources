@@ -118,3 +118,64 @@ rename_dict = {
     'sre444': 'uci_neonatal',
     'sre445': 'unidades_dentales'
 }
+
+combinations = {
+    'personal_medico_general': [
+        'personal_medico_nomina', 'personal_medico_acuerdo', 'contacto_directo_paciente_nomina',
+        'contacto_directo_paciente_acuerdo', 'medicos_generales_nomina', 'medicos_generales_acuerdo',
+        'residentes_nomina', 'residentes_acuerdo', 'medicos_otras_labores_nomina',
+        'medicos_otras_labores_acuerdo'
+    ],
+    'personal_medico_esp': [
+        'especialistas_nomina', 'especialistas_acuerdo',
+        'otros_especialistas_nomina', 'otros_especialistas_acuerdo'
+    ],
+    'ginecoobstetras': ['ginecoobstetras_nomina', 'ginecoobstetras_acuerdo'],
+    'pediatras': ['pediatras_nomina', 'pediatras_acuerdo'],
+    'cirujanos': ['cirujanos_nomina', 'cirujanos_acuerdo'],
+    'internistas': ['internistas_nomina', 'internistas_acuerdo'],
+    'anestesiologos': ['anestesiologos_nomina', 'anestesiologos_acuerdo'],
+    'odontologos': ['odontologos_nomina', 'odontologos_acuerdo'],
+    'pasantes': ['pasantes_nomina', 'pasantes_acuerdo'],
+    'personal_hospital': [
+        'personal_no_medico', 'personal_paramedico', 'otro_personal_paramedico',
+        'personal_administrativo', 'otro_personal'
+    ],
+    'enfermeras_general': [
+        'auxiliares_enfermeria', 'enfermeras_generales', 'pasantes_enfermeria',
+        'otras_enfermeras'
+    ],
+    'enfermeras_esp': ['enfermeras_especializadas'],
+    'atencion_medica': ['diagnostico_medico', 'tratamiento_medico'],
+    'consultorios': [
+        'consultorios', 'consultorios_generales', 'consultorios_especialidad'
+    ],
+    'camas_hospitalizacion': [
+        'camas_censables', 'camas_medicina_interna', 'camas_cirugia',
+        'camas_ginecoobstetricia', 'camas_pediatria', 'camas_otras'
+    ],
+    'camas_atencion_temporal': [
+        'camas_no_censables', 'camas_cuidado_intensivo',
+        'camas_cuidado_intermedio', 'camas_no_censables_otras'
+    ],
+    'labs': ['lab_analisis_clinicos', 'lab_anatomia_patologica'],
+    'infraestructura_imagenologia': [
+        'salas_radiologia', 'equipos_rayos_x', 'resonancia_magnetica', 'mamografia',
+        'ultrasonido', 'tac_scanner'
+    ],
+    'infraestructura_radioterapia': [
+        'area_radioterapia', 'equipos_radioterapia', 'bomba_cobalto'
+    ],
+    'infraestructura_quirurgica_obstetrica': ['quirofanos', 'salas_expulsion'],
+    'infraestructura_neonatal_pediatrica': [
+        'incubadoras', 'cunas_rn', 'area_pediatria'
+    ],
+    'infraestructura_uci': ['uci', 'uci_adultos', 'uci_neonatal'],
+    'infraestructura_urgencias_aislamiento': ['area_urgencias', 'area_aislamiento'],
+    'infraestructura_diagnostico_funcional': [
+        'electrocardiografo', 'electroencefalografo', 'endoscopio', 'litotriptores'
+    ],
+    'infraestructura_dialisis': ['equipo_dialisis', 'hemodialisis'],
+    'infraestructura_banco_sangre': ['bancos_sangre'],
+    'infraestructura_odontologia': ['unidades_dentales']
+}

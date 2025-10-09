@@ -1,6 +1,6 @@
 # Libraries
 import polars as pl
-from variables import rename_dict
+from variables import rename_dict, combinations
 
 pl.Config.set_tbl_cols(18)
 # Global variables
@@ -13,11 +13,23 @@ clues = pl.read_excel(
     '../data/ESTABLECIMIENTO_SALUD_202508.xlsx', sheet_name='CLUES_202508').lazy()
 resources = pl.scan_csv(
     f'{RESOURCE_FILES}/conjunto_de_datos/conjunto_de_datos_recursos_esep_2024.csv')
-ageb = pl.scan_csv(f'{RESOURCE_FILES}/catalogos/tc_esep_ageb.csv')
+ageb = pl.scan_csv(
+    f'{RESOURCE_FILES}/catalogos/tc_esep_ageb.csv',
+    schema={
+        'CLAVE_ENTIDAD': pl.Int64,
+        'ENTIDAD': pl.String,
+        'CLAVE_MUNICIPIO': pl.Int64,
+        'MUNICIPIO': pl.String,
+        'CLAVE_LOCALIDAD': pl.Int64,
+        'LOCALIDAD': pl.String,
+        'AGEB': pl.String
+    }
+)
 lat_lon_places = pl.scan_csv(
     '../data/AGEEML_20259251148648_utf.csv',
-    schema_overrides={'CVE_ENT': pl.Utf8,
-                      'LON_DECIMAL': pl.Float64},
+    schema_overrides={
+        'CVE_ENT': pl.Utf8,
+        'LON_DECIMAL': pl.Float64},
     encoding='utf8'
 )
 
@@ -123,23 +135,80 @@ resources_cl_agg = resources_cl_agg.with_columns([
     truncar_1_decimal_expr('LON_DECIMAL').alias('lon_trunc_res')
 ])
 
-test = resources_cl_agg.select(pl.col(
-    ['sreentidad', 'sremunic', 'CLAVE_LOCALIDAD', 'lat_trunc_res', 'lon_trunc_res']))
-test2 = egresos_clues_cl.select(pl.col(
-    ['CLAVE DE LA ENTIDAD', 'CLAVE DEL MUNICIPIO', 'CLAVE DE LA LOCALIDAD', 'lat_trunc', 'lon_trunc']))
-
-
 # 2. Join
 egresos_resources = resources_cl_agg.join(
     egresos_clues_cl,
-    left_on=['sreentidad', 'sremunic',
-             'CLAVE_LOCALIDAD', 'lat_trunc_res', 'lon_trunc_res'],
-    right_on=['CLAVE DE LA ENTIDAD', 'CLAVE DEL MUNICIPIO',
-              'CLAVE DE LA LOCALIDAD', 'lat_trunc', 'lon_trunc'],
+    left_on=[
+        'sreentidad', 'sremunic',
+        'CLAVE_LOCALIDAD', 'lat_trunc_res', 'lon_trunc_res'],
+    right_on=[
+        'CLAVE DE LA ENTIDAD', 'CLAVE DEL MUNICIPIO',
+        'CLAVE DE LA LOCALIDAD', 'lat_trunc', 'lon_trunc'],
     how='inner'
 )
-choosen_cols_eg_res = ['ENTIDAD_right', 'MUNICIPIO_right', 'LOCALIDAD_right', 'POB_TOTAL'
-                       ]
+
+# 3. Drop columns
+choosen_cols_eg_res = [
+    'ENTIDAD_right', 'MUNICIPIO_right', 'LOCALIDAD_right', 'POB_TOTAL']
 egresos_resources = egresos_resources.drop(choosen_cols_eg_res)
 
+# 4. Rename columns
 egresos_resources = egresos_resources.rename(rename_dict)
+
+# 5. Aggregate columns
+for key, value in combinations.items():
+    egresos_resources = egresos_resources.with_columns(
+        pl.sum_horizontal([pl.col(col) for col in value]).alias(key)
+    ).drop(value)
+
+# 6. Drop final columns
+egresos_resources = egresos_resources.drop([
+    'anio', 'clave_institucion', 'latitud', 'longitud', 'nombre_unidad',
+    'lat_trunc_res', 'lon_trunc_res', 'nombre_institucion', 'tipo_derechohabiente'
+]
+)
+
+# 7. Categorize ages
+bins = [1, 5, 12, 18, 30, 45, 60, 75, 90]
+labels = [
+    'Menor de 1 año',
+    '1 a 4 años',
+    '5 a 11 años',
+    '12 a 17 años',
+    '18 a 29 años',
+    '30 a 44 años',
+    '45 a 59 años',
+    '60 a 74 años',
+    '75 a 89 años',
+    '90 años o más'
+]
+egresos_resources = egresos_resources.with_columns([
+    pl.col("edad_anios").cut(
+        breaks=bins,
+        labels=labels
+    ).alias('edad')
+]).drop('edad_anios')
+
+# 8. Cast dates
+egresos_resources = egresos_resources.with_columns([
+    pl.col('fecha_ingreso')
+    .str.strptime(pl.Datetime, format="%d/%m/%Y %H:%M").alias('fecha_ingreso'),
+    pl.col('fecha_egreso')
+    .str.strptime(pl.Datetime, format="%d/%m/%Y %H:%M").alias('fecha_egreso')
+])
+egresos_resources = egresos_resources.cast(
+    {'fecha_ingreso': pl.Date, 'fecha_egreso': pl.Date})
+
+egresos_resources = egresos_resources.with_columns([
+    pl.col('fecha_ingreso').dt.year().alias('year_ingreso'),
+    pl.col('fecha_ingreso').dt.month().alias('mes_ingreso'),
+    pl.col('fecha_ingreso').dt.weekday().alias('dia_sem_ingreso'),
+    pl.col('fecha_ingreso').dt.quarter().alias('trimestre_ingreso'),
+    pl.col('fecha_egreso').dt.year().alias('year_egreso'),
+    pl.col('fecha_egreso').dt.month().alias('mes_egreso'),
+    pl.col('fecha_egreso').dt.weekday().alias('dia_sem_egreso'),
+    pl.col('fecha_egreso').dt.quarter().alias('trimestre_egreso'),
+])
+
+# 5️⃣ Save to csv
+egresos_resources.sink_csv('../data/egresos_resources_final.csv')

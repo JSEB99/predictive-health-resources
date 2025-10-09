@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from variables import combinations
 
 
 def truncar_1_decimal(x):
@@ -247,4 +248,19 @@ rename_dict = {
 }
 
 egresos_resources.rename(columns=rename_dict, inplace=True)
+# print(egresos_resources.shape)
+
+for key, value in combinations.items():
+    egresos_resources[key] = egresos_resources[value].sum(axis=1)
+    egresos_resources = egresos_resources.drop(columns=value)
+
+# print(egresos_resources.shape) #!PASA
+
+del_cols = [
+    'lat_trunc_res', 'lon_trunc_res', 'nombre_unidad', 'latitud', 'longitud', 'clave_institucion',
+    'lat_trunc', 'lon_trunc', 'nombre_institucion', 'anio', 'tipo_derechohabiente'
+]
+egresos_resources = egresos_resources.drop(columns=del_cols)
+
 print(egresos_resources.shape)
+print(egresos_resources.dtypes)
