@@ -40,10 +40,6 @@ def keep_required_files(files: list, output_dir):
 # Variables
 
 
-# print(extract_file_name(
-#     'https://www.inegi.org.mx/contenidos/programas/salud/datosabiertos/conjunto_de_datos_esep_2024_csv.zip'))
-
-
 output_dir = '../data/'
 os.makedirs(output_dir, exist_ok=True)
 
@@ -117,77 +113,3 @@ try:
 
 except Exception as e:
     print(f'Ocurrió un error {e}')
-
-
-# cont1 = requests.get(
-#     'https://datos.gob.mx/dataset/datos_egresos_hospitalarios')
-# cont2 = requests.get(
-#     'http://www.dgis.salud.gob.mx/contenidos/intercambio/clues_gobmx.html')
-# cont3 = requests.get(
-#     'http://www.dgis.salud.gob.mx/contenidos/intercambio/clues_gobmx.html')
-
-# if cont1.status_code == 200:
-#     soup1 = BeautifulSoup(cont1.text, 'lxml')
-#     link_btn = soup1.find_all('a', class_='btn btn-outline-primary')
-#     for a in link_btn:
-#         href = a.get('href', '')
-#         if '2024' in href:
-#             print('Enlace del archivo de egresos 2024:', href)
-#             break
-# else:
-#     print('Ocurrio un error con el archivo (código de estado):', cont1.status_code)
-# if cont2.status_code == 200:
-#     soup2 = BeautifulSoup(cont2.text, 'lxml')
-#     link_btn2 = soup2.find_all('a')
-#     for a in link_btn2:
-#         href = a.get('href', '')
-#         if 'ESTABLECIMIENTO_SALUD' in href:
-#             print('Enlace del archivo de establecimientos:', href)
-#             break
-# else:
-#     print('Ocurrio un error con el archivo (código de estado):', cont2.status_code)
-# if cont3.status_code == 200:
-#     soup3 = BeautifulSoup(cont3.text, 'lxml')
-#     link_btn3 = soup3.find_all('a')
-#     for a in link_btn3:
-#         href = a.get('href', '')
-#         if 'ESTABLECIMIENTO_SALUD' in href:
-#             print('Enlace del archivo de establecimientos:', href)
-#             break
-# else:
-#     print('Ocurrio un error con el archivo (código de estado):', cont3.status_code)
-
-
-# match = re.search(r'([^/]+)_csv\.zip$', urls[1])
-
-# if match:
-#     nombre_base = match.group(1)
-#     print(nombre_base)  # → conjunto_de_datos_esep_2024
-# else:
-#     print('No se encontró coincidencia')
-# # Nombre del archivo zip a guardar
-# zip_path = nombre_base
-
-# # Carpeta donde se extraerán los archivos
-# extract_dir = nombre_base
-
-# # Paso 1: Descargar el archivo
-# print('Descargando ZIP...')
-# response = requests.get(urls[1])
-
-# if response.status_code == 200:
-#     with open(zip_path, 'wb') as f:
-#         f.write(response.content)
-#     print(f'Archivo guardado como {zip_path}')
-# else:
-#     print(f'Error al descargar el archivo: {response.status_code}')
-#     exit()
-
-# # Paso 2: Extraer el ZIP
-# print(f'Extrayendo archivos en {extract_dir}...')
-# os.makedirs(extract_dir, exist_ok=True)
-
-# with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-#     zip_ref.extractall(extract_dir)
-
-# print('Extracción completa ✅')

@@ -2,13 +2,12 @@
 import polars as pl
 from variables import rename_dict, combinations
 
-pl.Config.set_tbl_cols(18)
 # Global variables
 RESOURCE_FILES = '../data/conjunto_de_datos_recursos_esep_2024'
 
 # Files
 egresos = pl.scan_csv(
-    '../data/egresos_hospitalarios_issste2024.csv', separator=';')
+    '../data/egresos_hospitalarios_issste2024.csv')
 clues = pl.read_excel(
     '../data/ESTABLECIMIENTO_SALUD_202508.xlsx', sheet_name='CLUES_202508').lazy()
 resources = pl.scan_csv(
@@ -188,13 +187,12 @@ egresos_resources = egresos_resources.with_columns([
         labels=labels
     ).alias('edad')
 ]).drop('edad_anios')
-
 # 8. Cast dates
 egresos_resources = egresos_resources.with_columns([
     pl.col('fecha_ingreso')
-    .str.strptime(pl.Datetime, format="%d/%m/%Y %H:%M").alias('fecha_ingreso'),
+    .str.strptime(pl.Datetime, format="%Y-%m-%d %H:%M").alias('fecha_ingreso'),
     pl.col('fecha_egreso')
-    .str.strptime(pl.Datetime, format="%d/%m/%Y %H:%M").alias('fecha_egreso')
+    .str.strptime(pl.Datetime, format="%Y-%m-%d %H:%M").alias('fecha_egreso')
 ])
 egresos_resources = egresos_resources.cast(
     {'fecha_ingreso': pl.Date, 'fecha_egreso': pl.Date})
@@ -209,6 +207,6 @@ egresos_resources = egresos_resources.with_columns([
     pl.col('fecha_egreso').dt.weekday().alias('dia_sem_egreso'),
     pl.col('fecha_egreso').dt.quarter().alias('trimestre_egreso'),
 ])
-
 # 5️⃣ Save to csv
+
 egresos_resources.sink_csv('../data/egresos_resources_final.csv')
