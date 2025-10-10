@@ -85,10 +85,10 @@ Aquí tienes un **diccionario de datos en formato Markdown** para los campos que
 ## 🎯 Objetivos para la siguiente semana
 
 - [ ] Scripts para ETL
-  - [ ] Extraer los datos automaticamente
-  - [ ] Transformarlos y crear modelo OLAP
+  - [X] Extraer los datos automaticamente
+  - [X] Transformarlos y crear modelo OLAP
   - [ ] Cargarlos a la base de datos
-- [ ] Análisis Exploratorio de los Datos
+- [X] Análisis Exploratorio de los Datos
 - [ ] Hipótesis para el análisis final
 - [ ] Análisis inicial para el modelo predictivo
 
