@@ -10,7 +10,10 @@ import re
 from tqdm import tqdm
 
 
-def check_file(file_name: str):
+def check_file(file_name: str, dir: bool = False):
+    if dir:
+        subdir = os.path.join(output_dir, file_name)
+        return os.path.isdir(subdir)
     return file_name in os.listdir(output_dir)
 
 
@@ -18,8 +21,6 @@ def extract_file_name(url: str):
     base_url = url.split('?')[0]
     extension = base_url.split('.')[-1]
     match = re.search(rf'\/([^/]+)\.{extension}$', base_url)
-    # if extension == 'zip':
-    #     return match.group(1), extension
     return match.group(0), extension
 
 
@@ -59,6 +60,8 @@ urls = {
         'class': 'btn btn-outline-primary',
         'search_for': '2024',
         'extract': True,
+        'download_file': 'egresos_hospitalarios_issste2024.csv',
+        'directory': False
     },
     'http://www.dgis.salud.gob.mx/contenidos/intercambio/clues_gobmx.html': {
         'element': 'a',
@@ -67,10 +70,14 @@ urls = {
         'extract': True
     },
     'https://www.inegi.org.mx/contenidos/programas/salud/datosabiertos/conjunto_de_datos_esep_2024_csv.zip': {
-        'extract': False
+        'extract': False,
+        'download_file': 'conjunto_de_datos_recursos_esep_2024',
+        'directory': True
     },
     'https://www.inegi.org.mx/contenidos/app/ageeml/min_con_acento_baja.zip': {
-        'extract': False
+        'extract': False,
+        'download_file': 'AGEEML_20259251148648_utf.csv',
+        'directory': False
     }
 }
 
@@ -89,7 +96,7 @@ try:
         else:
             hrefs = key
         file, extension = extract_file_name(hrefs)
-        if not check_file(file):
+        if not (check_file(file[1:]) or check_file(values['download_file'], values['directory'])):
             response = requests.get(hrefs, stream=True)
             total = int(response.headers.get('content-length', 0))
             block_size = 1024  # 1 Kibibyte
@@ -104,8 +111,7 @@ try:
                 for data in response.iter_content(block_size):
                     f.write(data)
                     bar.update(len(data))
-        if extension == 'zip':
-            print(output_dir+file)
+        if extension == 'zip' and check_file(file[1:]):
             with zipfile.ZipFile(output_dir+file, 'r') as zip_ref:
                 zip_ref.extractall(output_dir)
             print(f'Archivo {file} extraido satisfactoriamente')
