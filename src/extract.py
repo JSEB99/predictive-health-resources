@@ -52,7 +52,8 @@ output_files = [
     'egresos_resources_final.csv',
     'ESTABLECIMIENTO_SALUD_202508.xlsx',
     'final_egres_res.csv',
-    'weather_api.csv'
+    'weather_api.csv',
+    'gold'
 ]
 
 urls = {
