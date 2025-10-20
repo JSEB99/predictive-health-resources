@@ -1,0 +1,19 @@
+[project]
+name = "models"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "db-dtypes>=1.4.3",
+    "google-cloud-bigquery>=3.38.0",
+    "google-cloud-bigquery-storage>=2.33.1",
+    "ipykernel>=7.0.1",
+    "jupyterlab>=4.4.9",
+    "lightgbm>=4.6.0",
+    "matplotlib>=3.10.7",
+    "numpy>=2.3.4",
+    "pandas>=2.3.3",
+    "scikit-learn>=1.7.2",
+    "seaborn>=0.13.2",
+]

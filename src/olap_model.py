@@ -48,8 +48,6 @@ dim_time = dim_time.with_columns(
     pl.col('fecha').cast(pl.Date)
 ).sort('fecha').with_row_index('id_time', offset=1)
 
-# print(dim_tiempo.collect())
-
 # 2. Place dimension
 dim_place = data.select([
     'clave_entidad', 'nombre_entidad', 'clave_municipio', 'nombre_municipio',
@@ -95,7 +93,7 @@ data = data.with_columns(
     ).dt.total_days().alias('dias_estancia')
 )
 
-# 1. Instancia Fact Table
+# 1. Estancia Fact Table
 fact_days = data.join(
     dim_time, left_on='fecha_ingreso',
     right_on='fecha', how='left').rename({'id_time': 'id_time_ingreso'})\
