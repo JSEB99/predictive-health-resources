@@ -5,9 +5,10 @@ st.set_page_config(page_title="Contact", page_icon="📞")
 
 sb.show_sidebar()
 
-st.header("📞 Contacto", divider="red")
-
-st.subheader("Integrantes:")
+st.markdown("<h1 style='text-align: center; color: rgb(189, 64, 67);'>Contacto</h1>",
+            unsafe_allow_html=True)
+st.divider()
+st.subheader(":red[Integrantes:]")
 name, github = st.columns(2)
 
 name.write("Sebastian Mora")

@@ -3,3 +3,4 @@ requests
 google-cloud-bigquery
 google-cloud-bigquery-storage
 streamlit
+db-dtypes
