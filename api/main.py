@@ -97,7 +97,7 @@ app = FastAPI(
 )
 
 
-@app.get('/v1/predict/', tags=['predictions'])
+@app.post('/v1/predict/', tags=['predictions'])
 async def get_prediction(data: PatientPredictionRequest):
     test = pd.DataFrame([data.model_dump()])
     model = joblib.load(f'{MODEL_PATH}/model.pkl')

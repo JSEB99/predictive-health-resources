@@ -9,6 +9,9 @@ data/
 # src
 __pycache__/
 
+# app
+secrets.toml
+
 # environments
 venv/
 env/

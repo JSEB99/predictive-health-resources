@@ -1,6 +1,8 @@
 import streamlit as st
 import utils.sidebar as sb
 
+st.set_page_config(page_title="Contact", page_icon="📞")
+
 sb.show_sidebar()
 
 st.header("📞 Contacto", divider="red")
