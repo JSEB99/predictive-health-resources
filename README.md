@@ -191,10 +191,10 @@ Estos resultados no solo proporcionan una comprensión profunda del comportamien
 
 ## Integrantes
 
-| Nombre         | GitHub                                 | LinkedIn                                             |
-| -------------- | -------------------------------------- | ---------------------------------------------------- |
-| Luis Flores    | [GitHub](https://github.com/LuisF1412) | [LinkedIn]()                                         |
-| Sebastian Mora | [GitHub](https://github.com/JSEB99)    | [LinkedIn](https://www.linkedin.com/in/jsebastianm/) |
+| Nombre         | GitHub                                 | LinkedIn                                                     |
+| -------------- | -------------------------------------- | ------------------------------------------------------------ |
+| Luis Flores    | [GitHub](https://github.com/LuisF1412) | [LinkedIn](https://www.linkedin.com/in/luis-flores-basurto/) |
+| Sebastian Mora | [GitHub](https://github.com/JSEB99)    | [LinkedIn](https://www.linkedin.com/in/jsebastianm/)         |
 
 ## Tecnologías
 
@@ -213,3 +213,39 @@ Estos resultados no solo proporcionan una comprensión profunda del comportamien
 
 ## Instrucciones
 
+Para poder ejecutar `localmente` el proyecto se deben seguir los siguientes pasos:
+
+> [!TIP]
+> Por cada directorio se tiene un **ambiente**, por lo que se debe activar el ambiente antes de ejecutar, para ello ubicarse dentro del directorio:
+> - Crear ambiente `python -m venv .venv` o con `uv init`
+> - Activarlo `.venv\Scripts\activate.ps1` o `uv sync`
+> - Instalar dependencias `pip install -r requirements.txt`
+> - Para ejecutar con **uv** es `uv run comando`
+
+1️⃣ Clonar el proyecto: `git clone url_proyecto`
+
+2️⃣ En `src/` ejecutar los scripts de python en el siguiente orden:
+1. `extract.py`
+2. `clean_lat_lon.py`
+3. `weather_extract.py`
+4. `transform.py`
+5. `olap_model.py`
+
+> [!WARNING]
+> La `url` de los archivos de `establecimientos de salud` ya no se encuentra disponible, **se recomienda** comentar eso en el diccionario de extracción en el archivo `extract.py`, y usar un documento similar en la plataforma del **INEGI**
+
+Lo anterior crea un directorio `data/` donde tendremos la información de los archivos en un directorio interno `data/gold/`
+
+3️⃣ En `app/` el directorio esta enfocado en `BigQuery` y `Render` para el API, por lo que deberiamos modificar las lineas relacionadas a la extracción de datos, para que tome los datos desde el directorio `gold/` esto ser realizaría con un `pd.read_csv('archivo_a_leer.csv')` y ejecutariamos con `streamlit run home.py`
+
+> [!TIP]
+> Para los que deseen usar BigQuery y/o Render
+> - Subir los archivos a BigQuery
+> - Obtener el [sdk](https://docs.cloud.google.com/sdk/docs/install-sdk?hl=es-419) en su equipo para obtener las credenciales de acceso
+> - Crear un directorio secrets.toml dentro de `.streamlit` y colocar las credenciales segun el archivo de ejemplo `secrets.example.toml`
+> 
+> Para [Render](https://render.com/)
+> - Crear un **servicio web** en Render con referencia al directorio `api/`, esto lo hacemos desde un repositorio de GitHub
+
+> [!INFO]
+> Para ejecutar localmente el `app/` se debe ejecutar desde la raíz del proyecto, es decir, se activa su ambiente y se ejecutaría asi: `streamlit run app/home.py`

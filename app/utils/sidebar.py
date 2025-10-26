@@ -4,7 +4,7 @@ from functools import lru_cache
 
 @lru_cache(maxsize=1)
 def load_sidebar_html():
-    with open("./utils/sidebar.html", "r", encoding="utf-8") as file:
+    with open("./app/utils/sidebar.html", "r", encoding="utf-8") as file:
         return file.read()
 
 
