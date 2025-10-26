@@ -247,5 +247,5 @@ Lo anterior crea un directorio `data/` donde tendremos la información de los ar
 > Para [Render](https://render.com/)
 > - Crear un **servicio web** en Render con referencia al directorio `api/`, esto lo hacemos desde un repositorio de GitHub
 
-> [!INFO]
+> [!IMPORTANT]
 > Para ejecutar localmente el `app/` se debe ejecutar desde la raíz del proyecto, es decir, se activa su ambiente y se ejecutaría asi: `streamlit run app/home.py`
