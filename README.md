@@ -168,7 +168,75 @@ Se desarrollaron dos modelos OLAP, uno para análisis y otro para modelos, de es
 
 ![Modelos OLAP](./docs/images/olap_models.jpg)
 
-## Análisis y Hallazgos Clave
+Aquí tienes el texto convertido correctamente a **Markdown**:
+
+---
+
+## Análisis Exploratorio de Datos (EDA)
+
+El **Análisis Exploratorio de Datos (EDA)** se centró en **7 áreas fundamentales** para descomponer la naturaleza de la demanda hospitalaria.
+Los hallazgos de este análisis sirvieron como base directa para la **ingeniería de características** del modelo predictivo.
+
+Los descubrimientos principales se agrupan en **cuatro categorías**:
+
+
+### 1. Patrones Temporales
+
+**Patrón de "Stock" vs. "Flujo":**
+El análisis reveló dos comportamientos distintos:
+
+* **Ocupación de Camas (Stock):**
+  La ocupación total de camas (Análisis #1) no es aleatoria; sigue un claro patrón estacional predecible, con picos en invierno (cercanos a las **3,600 camas**) y valles en verano.
+
+* **Ingresos Diarios (Flujo):**
+  El flujo de ingresos diarios (Análisis #2) es, en contraste, extremadamente volátil, oscilando mayormente en un rango de **351 a 835 admisiones diarias**.
+
+**Ciclos Semanales y Mensuales:**
+Esta volatilidad no es extrema. El Análisis #5 demuestra **patrones cíclicos fuertes**, como por ejemplo:
+
+* La demanda de ingresos **cae drásticamente durante los fines de semana**.
+* Es **notablemente más alta en los meses de invierno**.
+
+
+### 2. Impulsores de la Demanda
+
+* **Nivel de Atención:**
+  La carga de trabajo está fuertemente concentrada. El Análisis #3 demuestra que los **hospitales de Tercer Nivel** manejan la gran mayoría de la demanda
+  (un promedio de aproximadamente **23 ingresos/día/hospital**), superando la carga del **Segundo Nivel** (~6/día) y del **Primer Nivel** (~2/día).
+
+* **Composición por Servicio:**
+  La demanda no es homogénea. El Análisis #4 muestra que se compone de **servicios con perfiles únicos**:
+
+  * *Gineco-Obstetricia* exhibe una **volatilidad extrema**, con picos de casi **5,000 ingresos semanales**.
+  * *Cirugía General* presenta una **base más estable**.
+
+
+### 3. Impacto en Recursos
+
+* **Duración de Estancia:**
+  El consumo de recursos (camas) depende críticamente de la **duración de la estancia**.
+  El Análisis #6 revela grandes disparidades:
+  *Medicina Interna* retiene pacientes **más del doble de tiempo** que *Gineco-Obstetricia*.
+
+* **Causa de Estancias Atípicas:**
+  Las estancias atípicamente largas (*outliers*) no son aleatorias.
+  El Análisis #6 (Sub-análisis) demuestra que son impulsadas por **diagnósticos específicos** que varían para cada servicio:
+
+  * “**Neumonía**” en *Medicina Interna*.
+  * “**Trauma**” en *Cirugía General*.
+
+  Estos diagnósticos no solo explican los *outliers*, sino que también **señalan oportunidades de mejora en la eficiencia**, por ejemplo:
+
+  * Programas de **manejo temprano de neumonía** en Medicina Interna.
+  * Protocolos de **rehabilitación post-fractura** en Cirugía General.
+
+### 4. Patrones Geoespaciales
+
+* **Concentración Geográfica:**
+  La demanda hospitalaria no está distribuida uniformemente por el país.
+  El Análisis #7 identifica **puntos centralizados** y una **alta concentración de la carga de trabajo** en entidades clave como:
+  **Ciudad de México**, **Michoacán** y **Veracruz**.
+
 
 ## Solución Predictiva
 
